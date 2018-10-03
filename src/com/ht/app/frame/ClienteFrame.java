@@ -57,11 +57,12 @@ public class ClienteFrame extends javax.swing.JFrame {
                 Action action = message.getAction();
             
                 if (action.equals(Action.CONNECT)){
+                    connect(message);
                     
                 }else if (action.equals(Action.DISCONNECT)){
-                    
+                    disconect(message);
                 }else if (action.equals(Action.SEND_ONE)){
-                    
+                    receive(message);
                 }else if (action.equals(Action.USERS_ONLINE)){
                     
                 }
@@ -75,6 +76,22 @@ public class ClienteFrame extends javax.swing.JFrame {
             
             
            }
+    }
+    
+    private void connect(ChatMessage message){
+        this.txtAreaReceive.append(message.getName() + "\n");
+    }
+    
+    private void disconect(ChatMessage message){
+        
+    }
+    
+    private void receive(ChatMessage message){
+        //com append pode acumular msg
+        this.txtAreaReceive.append(message.getName() + "\n");
+    }
+    private void refreshOnlines(ChatMessage message){
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -255,7 +272,23 @@ public class ClienteFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btConnectarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btConnectarActionPerformed
-        // TODO add your handling code here:
+        String name = txtName.getText();
+        
+        if(!name.isEmpty()){
+            this.message = new ChatMessage();
+            this.message.setAction(Action.CONNECT);
+            this.message.setName(name);
+            
+            if (this.socket == null){
+                this.service = new ClienteService();
+                this.socket = this.service.connect();
+                
+                new Thread(new ListenerSocket(this.socket)).start();
+            }
+            //enviar a mensagem
+            this.service.send(message);
+        }
+        
     }//GEN-LAST:event_btConnectarActionPerformed
 
     private void btSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btSairActionPerformed
@@ -277,38 +310,7 @@ public class ClienteFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ClienteFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ClienteFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ClienteFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ClienteFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ClienteFrame().setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btAtualizar;

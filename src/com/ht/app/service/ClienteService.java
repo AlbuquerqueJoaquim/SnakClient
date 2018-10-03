@@ -28,6 +28,7 @@ public class ClienteService {
         try {
             //caso queira conectar a alguma maquina em rede apenas colocar o IP da maquina
             this.socket = new Socket("localhost", 5555);
+            this.output = new ObjectOutputStream(socket.getOutputStream());
         }  catch (UnknownHostException ex) {
             Logger.getLogger(ClienteService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
