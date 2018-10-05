@@ -15,6 +15,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -79,7 +80,23 @@ public class ClienteFrame extends javax.swing.JFrame {
     }
     
     private void connect(ChatMessage message){
-        this.txtAreaReceive.append(message.getName() + "\n");
+        if (message.getText().equals("NO")){
+            this.txtName.setText("");
+            JOptionPane.showMessageDialog(this, "Conexão não realizada! \nTente novamente com um novo nome.");
+            return;
+        }
+        this.message = message;
+        this.btConnectar.setEnabled(false);
+        this.txtName.setEditable(false);
+        
+        this.btSair.setEnabled(true);
+        this.txtAreaSend.setEnabled(true);
+        this.txtAreaReceive.setEnabled(true);
+        this.btEnviar.setEnabled(true);
+        this.btLimpar.setEnabled(true);
+        this.btAtualizar.setEnabled(true);
+        
+        JOptionPane.showMessageDialog(this, "Você esta conectado ao snak");
     }
     
     private void disconect(ChatMessage message){
@@ -114,7 +131,7 @@ public class ClienteFrame extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaReceive = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        textAreaSend = new javax.swing.JTextArea();
+        txtAreaSend = new javax.swing.JTextArea();
         btEnviar = new javax.swing.JButton();
         btLimpar = new javax.swing.JButton();
 
@@ -130,6 +147,7 @@ public class ClienteFrame extends javax.swing.JFrame {
         });
 
         btSair.setText("Sair");
+        btSair.setEnabled(false);
         btSair.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btSairActionPerformed(evt);
@@ -168,6 +186,7 @@ public class ClienteFrame extends javax.swing.JFrame {
         jScrollPane3.setViewportView(listOnlines);
 
         btAtualizar.setText("Atualizar");
+        btAtualizar.setEnabled(false);
         btAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btAtualizarActionPerformed(evt);
@@ -195,15 +214,19 @@ public class ClienteFrame extends javax.swing.JFrame {
 
         jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
+        txtAreaReceive.setEditable(false);
         txtAreaReceive.setColumns(20);
         txtAreaReceive.setRows(5);
+        txtAreaReceive.setEnabled(false);
         jScrollPane1.setViewportView(txtAreaReceive);
 
-        textAreaSend.setColumns(20);
-        textAreaSend.setRows(5);
-        jScrollPane2.setViewportView(textAreaSend);
+        txtAreaSend.setColumns(20);
+        txtAreaSend.setRows(5);
+        txtAreaSend.setEnabled(false);
+        jScrollPane2.setViewportView(txtAreaSend);
 
         btEnviar.setText("Enviar");
+        btEnviar.setEnabled(false);
         btEnviar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btEnviarActionPerformed(evt);
@@ -211,6 +234,7 @@ public class ClienteFrame extends javax.swing.JFrame {
         });
 
         btLimpar.setText("Limpar");
+        btLimpar.setEnabled(false);
         btLimpar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btLimparActionPerformed(evt);
@@ -325,8 +349,8 @@ public class ClienteFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JList<String> listOnlines;
-    private javax.swing.JTextArea textAreaSend;
     private javax.swing.JTextArea txtAreaReceive;
+    private javax.swing.JTextArea txtAreaSend;
     private javax.swing.JTextField txtName;
     // End of variables declaration//GEN-END:variables
 }
