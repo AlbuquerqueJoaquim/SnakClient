@@ -100,7 +100,23 @@ public class ClienteFrame extends javax.swing.JFrame {
     }
     
     private void disconect(ChatMessage message){
-        
+        try {
+            //disconectando o cliente do servidor, fechando o socket
+            this.socket.close();
+            this.btConnectar.setEnabled(true);
+            this.txtName.setEnabled(true);
+            
+            this.btSair.setEnabled(false);
+            this.txtAreaReceive.setEnabled(false);
+            this.txtAreaSend.setEnabled(false);
+            this.btEnviar.setEnabled(false);
+            this.btLimpar.setEnabled(false);
+            this.btAtualizar.setEnabled(false);
+            
+            JOptionPane.showMessageDialog(this, "Você saiu do snak");
+        } catch (IOException ex) {
+            Logger.getLogger(ClienteFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void receive(ChatMessage message){
